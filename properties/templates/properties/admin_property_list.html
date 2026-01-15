@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Property Review</title>
+</head>
+<body>
+
+<h1>Admin Property Review</h1>
+
+{% if properties %}
+    {% for property in properties %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:15px;">
+            <h3>{{ property.title }}</h3>
+            <p><strong>Owner:</strong> {{ property.owner.email }}</p>
+            <p><strong>Price:</strong> {{ property.price }}</p>
+            <p><strong>Status:</strong> {{ property.status }}</p>
+
+            <!-- Approve -->
+            <form method="post" action="{% url 'admin_property_approve' property.id %}">
+                {% csrf_token %}
+                <button type="submit">Approve</button>
+            </form>
+
+            <br>
+
+            <!-- Reject -->
+            <form method="post" action="{% url 'admin_property_reject' property.id %}">
+                {% csrf_token %}
+                <textarea name="reason" placeholder="Rejection reason" required></textarea><br>
+                <button type="submit">Reject</button>
+            </form>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No properties to review.</p>
+{% endif %}
+
+</body>
+</html>
+
